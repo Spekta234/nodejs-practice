@@ -1,0 +1,17 @@
+GET http://localhost:3000/notes
+
+###
+
+POST http://localhost:3000/notes
+Content-Type: application/json
+
+{
+  "text": 34
+}
+
+###
+GET http://localhost:3000/notes/1
+
+
+###
+GET http://localhost:3000/notes/99
