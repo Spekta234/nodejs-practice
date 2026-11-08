@@ -6,7 +6,7 @@ POST http://localhost:3000/notes
 Content-Type: application/json
 
 {
-  "text": 34
+  "text": "Buy fish"
 }
 
 ###
@@ -15,3 +15,6 @@ GET http://localhost:3000/notes/1
 
 ###
 GET http://localhost:3000/notes/99
+
+###
+DELETE http://localhost:3000/notes/2

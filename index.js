@@ -21,7 +21,10 @@ app.post('/notes', (req, res) => {
     if (typeof text !== "string" || text.trim() === "") {
         return res.status(400).json({error : "text must be a non-empty string"});
     }
-    const newNote = {id: notes.length + 1, text: text.trim()};
+    
+    let freahNoteId = 4;
+    const newNote = {id: freshNoteId, text: text.trim()};
+    freshNoteId++;
     notes.push(newNote);
     res.status(201).json(newNote);
 });
@@ -35,6 +38,16 @@ app.get('/notes/:id', (req, res) => {
     res.json(singleNote);
 });
 
+app.delete('/notes/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const noteIndex = notes.findIndex((element) => element.id === id);
+    if (noteIndex === -1) {
+        return res.status(404).json({error : 'note not found'});
+    }
+    notes.splice(noteIndex, 1);
+    res.status(204).send();
+});
+
 app.get('/about', (req, res) => {
     res.send('spektas sres');
 });
@@ -46,6 +59,8 @@ app.get('/profile', (req, res) => {
         "skills" : ["flutter", "dart", "Get X"],
     });
 });
+
+
 
 
 
