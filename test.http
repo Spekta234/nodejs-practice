@@ -6,7 +6,7 @@ POST http://localhost:3000/notes
 Content-Type: application/json
 
 {
-  "text": "Buy fish"
+  "text": "Buy coffee"
 }
 
 ###
@@ -18,3 +18,11 @@ GET http://localhost:3000/notes/99
 
 ###
 DELETE http://localhost:3000/notes/2
+
+###
+PUT http://localhost:3000/notes/3
+Content-Type: application/json
+
+{
+  "text": "Spekta"
+}

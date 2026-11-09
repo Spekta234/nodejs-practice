@@ -7,6 +7,7 @@ const notes = [
     {id: 2, text: "Spag recipie"},
     {id: 3, text: "How to do pushups"}
  ];
+ let nextNoteId = 4;
 
 app.get('/notes', (req, res) => {
     res.json(notes);
@@ -21,10 +22,8 @@ app.post('/notes', (req, res) => {
     if (typeof text !== "string" || text.trim() === "") {
         return res.status(400).json({error : "text must be a non-empty string"});
     }
-    
-    let freahNoteId = 4;
-    const newNote = {id: freshNoteId, text: text.trim()};
-    freshNoteId++;
+    const newNote = {id: nextNoteId, text: text};
+    nextNoteId++;
     notes.push(newNote);
     res.status(201).json(newNote);
 });
@@ -38,6 +37,7 @@ app.get('/notes/:id', (req, res) => {
     res.json(singleNote);
 });
 
+
 app.delete('/notes/:id', (req, res) => {
     const id = Number(req.params.id);
     const noteIndex = notes.findIndex((element) => element.id === id);
@@ -46,6 +46,23 @@ app.delete('/notes/:id', (req, res) => {
     }
     notes.splice(noteIndex, 1);
     res.status(204).send();
+});
+
+app.put('/notes/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const singleNote = notes.find((element) => element.id === id);
+    if (!singleNote) {
+        return res.status(404).json({error : 'note not found'});
+    }
+
+    const text = req.body.text;
+    if (typeof text !== "string" || text.trim() === "") {
+        return res.status(400).json({error : "text must be a non-empty string"});
+    }
+
+    singleNote.text = text.trim();
+    res.status(200).json(singleNote);
+
 });
 
 app.get('/about', (req, res) => {
