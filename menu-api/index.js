@@ -18,22 +18,58 @@ app.post('/menu', (req, res) => {
     const name = req.body.name;
     if (typeof name !== "string" || name.trim() === '') {
         return res.status(400).json({error: "name must be a non-empty string"});
-    }
+    };
     const price = req.body.price;
     if (typeof price !== "number" || !Number.isFinite(price) || price <= 0 ) {
         return res.status(400).json({error: "price must be a number greater than zero"});
     };
 
-    const newMenu = {id: newMenuId, name: name, price: price};
+    const newMenu = {id: newMenuId, name: name.trim(), price: price};
     newMenuId ++;
     menu.push(newMenu);
     res.status(201).json(newMenu);
 });
 
-
-
 app.get('/menu/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const item = menu.find((element) => element.id === id);
+    if(!item) {
+        return res.status(404).json({error: "Item not found"})
+    };
+    res.json(item);
+});
 
+app.put('/menu/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const item = menu.find((element) => element.id === id);
+    if(!item) {
+        return res.status(404).json({error: "Item not found"})
+    };
+
+    const name = req.body.name;
+    if (typeof name !== "string" || name.trim() === '') {
+        return res.status(400).json({error: "name must be a non-empty string"});
+    };
+
+    const price = req.body.price;
+    if (typeof price !== "number" || !Number.isFinite(price) || price <= 0 ) {
+        return res.status(400).json({error: "price must be a number greater than zero"});
+    };
+
+    item.name = name.trim();
+    item.price = price;
+    res.status(200).json(item);
+});
+
+app.delete('/menu/:id', (req, res) => {
+    const id = Number(req.params.id);
+    const menuIndex = menu.findIndex((element) => element.id === id);
+    if (menuIndex === -1) {
+        return res.status(404).json({error: "Item not found"})
+    };
+
+    menu.splice(menuIndex, 1);
+    res.status(204).send();
 });
 
 app.listen(port, () => {
