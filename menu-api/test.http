@@ -5,8 +5,8 @@ POST http://localhost:4000/menu
 Content-Type: application/json
 
 {
-    "name" : "Beans and Bread",
-    "price" : 5000
+    "name" : "Yams",
+    "price" : 3300
 }
 
 ###
@@ -20,8 +20,8 @@ PUT  http://localhost:4000/menu/3
 Content-Type: application/json
 
 {
-    "name" : "Yam porridge",
-    "price" : 2500
+    "name" : "Pringles",
+    "price" : 2700
 }
 
 

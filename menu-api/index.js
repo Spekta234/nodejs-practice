@@ -1,3 +1,4 @@
+const e = require('express');
 const express = require('express');
 const app = express();
 app.use(express.json());
@@ -16,13 +17,14 @@ app.get('/menu', (req, res) => {
 
 app.post('/menu', (req, res) => {
     const name = req.body.name;
-    if (typeof name !== "string" || name.trim() === '') {
-        return res.status(400).json({error: "name must be a non-empty string"});
-    };
     const price = req.body.price;
-    if (typeof price !== "number" || !Number.isFinite(price) || price <= 0 ) {
-        return res.status(400).json({error: "price must be a number greater than zero"});
+    const error = validateMenuItem(req.body)
+    if (error) {
+      return res.status(400).json({error: error});
     };
+    
+    
+
 
     const newMenu = {id: newMenuId, name: name.trim(), price: price};
     newMenuId ++;
@@ -47,19 +49,30 @@ app.put('/menu/:id', (req, res) => {
     };
 
     const name = req.body.name;
-    if (typeof name !== "string" || name.trim() === '') {
-        return res.status(400).json({error: "name must be a non-empty string"});
-    };
-
     const price = req.body.price;
-    if (typeof price !== "number" || !Number.isFinite(price) || price <= 0 ) {
-        return res.status(400).json({error: "price must be a number greater than zero"});
+    const error = validateMenuItem(req.body) ;
+    if (error) {
+       return res.status(400).json({error : error});
     };
 
     item.name = name.trim();
     item.price = price;
     res.status(200).json(item);
 });
+
+
+function validateMenuItem(body) {
+    const name = body.name;
+    const price = body.price;
+
+    if (typeof name !== "string" || name.trim() === '') {
+        return "name must be a non-empty string";
+    } 
+    if (typeof price !== "number" || !Number.isFinite(price) || price <= 0 ) {
+        return "price must be a number greater than zero";
+    }
+    return null;
+}
 
 app.delete('/menu/:id', (req, res) => {
     const id = Number(req.params.id);
